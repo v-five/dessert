@@ -1,0 +1,29 @@
+{
+  "name": "Dessert",
+  "version": "0.0.1",
+  "description": "It is just a simple project but with a lot of sweets :)",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:v-five/dessert.git"
+  },
+  "keywords": [
+    "sweets"
+  ],
+  "author": "v-five",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/v-five/dessert/issues"
+  },
+  "dependencies": {
+    "express": "^3.5.1",
+    "logfmt": "^1.1.2"
+  },
+  "engines" : {
+    "node" : "0.10.*",
+    "npm" : "1.4.*"
+  }
+}

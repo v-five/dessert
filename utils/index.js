@@ -14,6 +14,7 @@ module.exports = {
 	},
 
 	render: {
-		profile: render.profile
+		profile: render.profile,
+		home: render.home
 	}
 }

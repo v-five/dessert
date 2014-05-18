@@ -1,17 +1,29 @@
 module.exports = function(app, passport) {
 
-	var utils = require("../utils");
+	var utils  = require("../utils");
+	var render = utils.render;
 
 	// Home page
-	app.get('/', function(req, res){
-		res.redirect("profile");
-	});
+	app.get('/', render.home);
 
 	// Profile page
-	app.get('/profile',	utils.isLoggedIn,	utils.render.profile);
+	app.get('/profile',	utils.isLoggedIn, render.profile);
 
-	// Login
-	app.get('/login', passport.authenticate('dessert', {scope: ['id', 'username']}));
+
+	// ****************************************** //
+	// ************* AUTHENTICATION ************* //
+	// ****************************************** //
+
+	// Login page
+	app.get('/login', function(req, res) {
+		res.render('login', { message: req.flash('loginMessage') });
+	});
+
+	// Process the authentication
+	app.post('/login',  passport.authenticate('dessert', {
+		successReturnToOrRedirect : '/profile',
+		failureRedirect : '/login'
+	}));
 
 	// Logout
 	app.get('/logout', function(req, res) {

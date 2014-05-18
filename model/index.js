@@ -1,6 +1,8 @@
 
 module.exports = {
 
-	user :      require('./user')
+	user  :      require('./user'),
+
+	token :      require('./token')
 
 };

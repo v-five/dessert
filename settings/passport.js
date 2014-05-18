@@ -1,47 +1,59 @@
 
 module.exports = function(passport){
 
-	var OAuth2Strategy  = require('passport-oauth').OAuth2Strategy;
-	var config          = require('../config');
-	var User            = require('../handler').user;
-	var API             = require('../utils').API;
-	var env = process.env.NODE_ENV || 'development';
+	var LocalStrategy           = require('passport-local').Strategy;
+	var User       		        = require('../handler').user;
+	var config                  = require('../config');
 
-	// Dessert login
-	passport.use('dessert', new OAuth2Strategy({
-				authorizationURL: env == "development" ? config.auth.localhost.authorizationURL : config.auth.dessert.authorizationURL,
-				tokenURL        : env == "development" ? config.auth.localhost.tokenURL : config.auth.dessert.tokenURL,
-				clientID        : config.auth.dessert.clientID,
-				clientSecret    : config.auth.dessert.clientSecret,
-				callbackURL     : env == "development" ? config.auth.localhost.callbackURL : config.auth.dessert.callbackURL
+
+
+	// ****************************************** //
+	// ********* PASSPORT SESSION SETUP ********* //
+	// ****************************************** //
+
+	// used to serialize the user for the session
+	passport.serializeUser(function(user, done) {
+		done(null, user._id);
+	});
+
+	// used to deserialize the user
+	passport.deserializeUser(function(id, done) {
+		User.findById(id, done);
+	});
+
+
+
+	// ****************************************** //
+	// *********** DESSERT LOGIN SETUP ********** //
+	// ****************************************** //
+
+	// dessert login
+	passport.use('dessert', new LocalStrategy({
+				usernameField : 'username',
+				passwordField : 'password',
+				passReqToCallback : true
 			},
-			function(accessToken, refreshToken, info, done) {
-				API.profile(accessToken, function(err, profile){
-					if(err)
-						return done(err);
+			function(req, username, password, done) {
+				User.login(req, done);
+			}
+	));
 
-					if(!profile)
-						return done(null, false);
 
-					User.login(accessToken, refreshToken, profile, info, function(err, user){
-						if(err)
-							return done(err);
 
-						if(!user)
-							return done(null, false);
+	// ****************************************** //
+	// ******* DESSERT REGISTRATION SETUP ******* //
+	// ****************************************** //
 
-						done(null, user);
-					});
+	passport.use('dessert-register', new LocalStrategy({
+				usernameField : 'username',
+				passwordField : 'password',
+				passReqToCallback : true
+			},
+			function(req, username, password, done) {
+				process.nextTick(function() {
+					User.register(req, done);
 				});
 			}
 	));
 
-	passport.serializeUser(function(user, done) {
-		done(null, user);
-	});
-
-	passport.deserializeUser(function(user, done) {
-		done(null, user);
-	});
-
-}
+};

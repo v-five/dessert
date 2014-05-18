@@ -1,4 +1,8 @@
 
+exports.home = function (req, res){
+	res.render("home");
+};
+
 exports.profile = function (req, res){
 
 	var user     = req.user;

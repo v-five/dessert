@@ -84,7 +84,32 @@ var getAccessToken = function(userID, done){
 }
 
 
+exports.register = function(req, done){
 
+	var formData = req.body;
+	User.findOne({ 'email' :  formData.email }, function(err, user) {
+
+		if (err)
+			return done(err);
+
+		if (user)
+			return done(null, false, req.flash('registerMessage', 'That email is already taken.'));
+
+		var newUser         = new User();
+
+		newUser.email       = formData.email;
+		newUser.username    = formData.username;
+		newUser.password    = newUser.generateHash(formData.password);
+
+		newUser.save(function(err) {
+			if (err)
+				throw err;
+			return done(null, newUser);
+		});
+
+	});
+
+}
 
 
 

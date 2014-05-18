@@ -33,11 +33,20 @@ module.exports = function(app, passport) {
 
 
 
-	// Process the login
-	app.get('/auth/dessert/callback', passport.authenticate('dessert', {
+
+	// ****************************************** //
+	// ************** REGISTRATION ************** //
+	// ****************************************** //
+
+	// Register page
+	app.get('/register', function(req, res) {
+		res.render('register', { message: req.flash('registerMessage') });
+	});
+
+	// Process the registration
+	app.post('/register', passport.authenticate('dessert-register', {
 		successRedirect : '/profile',
-		failureRedirect : '/',
-		failureFlash : true
+		failureRedirect : '/register'
 	}));
 
 };

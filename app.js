@@ -1,6 +1,6 @@
 
 var express     = require('express');
-var set         = require('./settings');
+var set         = require('./settings').set;
 var port        = process.env.PORT || 3030;
 
 //app init

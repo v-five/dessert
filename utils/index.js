@@ -5,16 +5,18 @@ var API = require("./API");
 
 module.exports = {
 
-	isLoggedIn: utils.isLoggedIn,
+	isLoggedIn:     utils.isLoggedIn,
 
-	generateUID: utils.generateUID,
+	generateUID:    utils.generateUID,
 
 	API: {
-		profile: API.profile
+		profile:    API.profile
 	},
 
 	render: {
-		profile: render.profile,
-		home: render.home
+		profile:    render.profile,
+		home:       render.home,
+		login:      render.login,
+		register:   render.register
 	}
 }

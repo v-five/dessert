@@ -8,13 +8,17 @@ module.exports = function(app) {
 	var session      = require('express-session');
 	var passport     = require('passport');
 	var flash        = require('connect-flash');
+	var login        = require('connect-ensure-login');
 	var config       = require("../config");
-	var set          = require('../settings');
+	var set          = require('../settings').set;
+	var get          = require('../settings').get;
+	var oauth2orize  = require('oauth2orize');
+	var server       = oauth2orize.createServer();
 
 	set.mongoose(mongoose);
 	set.passport(passport);
-	app.use(passport.initialize());
-	app.use(passport.session());
+	set.OAuth2orize(oauth2orize, server);
+	set.OAuth2(server, login, passport)
 
 	app.engine('html', swig.renderFile);
 	app.set('view engine', 'html');
@@ -27,8 +31,7 @@ module.exports = function(app) {
 	app.use(passport.session());
 	app.use(flash());
 
-	// Swig will cache templates, but you can disable that and use Express's caching instead:
 	swig.setDefaults({cache: false});
 
-	set.routes(app, passport);
+	set.routes(app, passport, get.OAuth2());
 };

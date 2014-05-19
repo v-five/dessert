@@ -111,8 +111,69 @@ exports.register = function(req, done){
 
 }
 
+exports.generateExchangeCode = function(user, client, done){
+	var exchangeCode     = utils.generateUID();
+	var dateNow          = Date.now();
+	var newToken         = new Token();
 
+	newToken.token       = exchangeCode;
+	newToken.type        = 'exchange';
+	newToken.user        = user._id;
+	newToken.client      = client.id;
+	newToken.scope       = client.scope;
+	newToken.created     = dateNow;
+	newToken.expire      = dateNow + 10*60*1000;
 
+	newToken.save(function (err) {
+		if (err)
+			return done(err);
+		return done(null, exchangeCode);
+	});
+};
+
+exports.generateAccessToken = function(client, exchangeCode, done){
+
+	Token.findOne({type: 'exchange', token: exchangeCode}, function(err, exchangeToken) {
+
+		if (err)
+			return done(err);
+
+		if (!exchangeToken)
+			return done(null, false);
+
+		if (exchangeToken.expired())
+			return done(null, false);
+
+		if (client.id !== exchangeToken.client)
+			return done(null, false);
+
+//		if (redirectURI !== exchangeCode.redirectURI)
+//          return done(null, false);
+
+		exchangeToken.remove(function (err) {
+			if(err)
+				return done(err);
+
+			var accessToken  = utils.generateUID(256);
+			var dateNow      = Date.now();
+			var newToken     = new Token();
+
+			newToken.token   = accessToken;
+			newToken.type    = 'access';
+			newToken.user    = exchangeToken.user;
+			newToken.client  = exchangeToken.client;
+			newToken.scope   = exchangeToken.scope;
+			newToken.created = dateNow;
+			newToken.expire  = dateNow + 24*60*60*1000;
+
+			newToken.save(function (err) {
+				if (err)
+					return done(err);
+				return done(null, accessToken, "refreshToken", {'expires_in': "24 hours"});
+			});
+		});
+	});
+}
 
 
 

@@ -1,24 +1,8 @@
-<!doctype html>
-<html>
-<head>
-	<title>Dessert Error</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-	<style>
-		body 		{ padding-top:80px; }
-	</style>
-</head>
-<body style="background-color: #323232">
-	<div class="container">
-		<div class="col-sm-6 col-sm-offset-3" style="background-color: #ffffff; border: 1px solid #a0a0a0; border-radius: 8px;">
-				<h1>Dessert Error</h1>
 
-				<div class="alert alert-danger">
-					<p>{% if error.message.length > 0 %}{{error.message}}{% else %}{{error.name}}{% endif %}</p>
-				</div>
+	<h1>Dessert Error</h1>
 
-			<p><a href="/logout">Logout</a> or go <a href="/">Home</a>.</p>
-		</div>
+	<div class="alert alert-danger">
+		<p>{% if error.message.length > 0 %}{{error.message}}{% else %}{{error.name}}{% endif %}</p>
 	</div>
-</body>
-</html>
+
+	<p><a href="/logout">Logout</a> or go <a href="/">Home</a>.</p>

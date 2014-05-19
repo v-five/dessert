@@ -1,4 +1,4 @@
-module.exports = function(app, passport) {
+module.exports = function(app, passport, oauth2) {
 
 	var utils  = require("../utils");
 	var render = utils.render;
@@ -15,9 +15,7 @@ module.exports = function(app, passport) {
 	// ****************************************** //
 
 	// Login page
-	app.get('/login', function(req, res) {
-		res.render('login', { message: req.flash('loginMessage') });
-	});
+	app.get('/login', render.login);
 
 	// Process the authentication
 	app.post('/login',  passport.authenticate('dessert', {
@@ -33,15 +31,22 @@ module.exports = function(app, passport) {
 
 
 
+	// ****************************************** //
+	// *************** OAUTH 2.0  *************** //
+	// ****************************************** //
+
+	app.get ('/oauth2',          oauth2.authorization);
+	app.post('/oauth2/decision', oauth2.decision);
+	app.post('/oauth2/token',    oauth2.token);
+
+
 
 	// ****************************************** //
 	// ************** REGISTRATION ************** //
 	// ****************************************** //
 
 	// Register page
-	app.get('/register', function(req, res) {
-		res.render('register', { message: req.flash('registerMessage') });
-	});
+	app.get('/register', render.register);
 
 	// Process the registration
 	app.post('/register', passport.authenticate('dessert-register', {

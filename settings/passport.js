@@ -2,6 +2,9 @@
 module.exports = function(passport){
 
 	var LocalStrategy           = require('passport-local').Strategy;
+	var BasicStrategy           = require('passport-http').BasicStrategy;
+	var FacebookStrategy        = require('passport-facebook').Strategy;
+	var ClientPasswordStrategy  = require('passport-oauth2-client-password').Strategy;
 	var User       		        = require('../handler').user;
 	var config                  = require('../config');
 
@@ -53,6 +56,77 @@ module.exports = function(passport){
 				process.nextTick(function() {
 					User.register(req, done);
 				});
+			}
+	));
+
+
+
+	// ****************************************** //
+	// ********** FACEBOOK LOGIN SETUP ********** //
+	// ****************************************** //
+
+	passport.use(new FacebookStrategy({
+				clientID        : config.auth.facebook.clientID,
+				clientSecret    : config.auth.facebook.clientSecret,
+				callbackURL     : config.auth.facebook.callbackURL
+			},
+			function(token, refreshToken, profile, done) {
+				User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+
+					if(err)
+						return done(err);
+
+					if(user)
+						return done(null, user);
+
+					else{
+
+						var newUser            = new User();
+						newUser.facebook.id    = profile.id;
+						newUser.facebook.token = token;
+						newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName;
+						newUser.facebook.email = profile.emails[0].value;
+
+						newUser.save(function(err) {
+							if (err)
+								throw err;
+
+							return done(null, newUser);
+						});
+					}
+				});
+			}
+	));
+
+
+
+	// ****************************************** //
+	// ******** DESSERT CLIENT AUTH SETUP ******* //
+	// ****************************************** //
+
+	passport.use(new BasicStrategy({
+				passReqToCallback : true
+			},
+			function(username, password, done) {
+				var client = { id: 1, name: 'Dessert-Web', clientId: 'abc123', clientSecret: 'ssh-secret' }
+//				db.clients.findByClientId(username, function(err, client) {
+//					if (err) { return done(err); }
+//					if (!client) { return done(null, false); }
+//					if (client.clientSecret != password) { return done(null, false); }
+				return done(null, client);
+//				});
+			}
+	));
+
+	passport.use(new ClientPasswordStrategy(
+			function(clientId, clientSecret, done) {
+				var client = { id: 1, name: 'Dessert-Web', clientId: 'abc123', clientSecret: 'ssh-secret' };
+//				db.clients.findByClientId(clientId, function(err, client) {
+//					if (err) { return done(err); }
+//					if (!client) { return done(null, false); }
+//					if (client.clientSecret != clientSecret) { return done(null, false); }
+				return done(null, client);
+//				});
 			}
 	));
 

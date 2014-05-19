@@ -1,6 +1,6 @@
 
 exports.home = function (req, res){
-	res.render("home");
+	res.render("template", {page: 'home.html'});
 };
 
 exports.profile = function (req, res){
@@ -11,13 +11,21 @@ exports.profile = function (req, res){
 	API.profile(user.accessToken, function(err, profile, info){
 
 		if(err)
-			res.render("error", {error: err});
+			res.render('template', { page: 'error.html', error: err });
 
 		if(!profile)
-			res.render("error", {error: info});
+			res.render('template', { page: 'error.html', error: info });
 
 		else
-			res.render("profile", {user: profile});
+			res.render("template", { page: 'profile.html', user: profile});
 
 	});
 };
+
+exports.login = function (req, res){
+	res.render('template', { page: 'login.html', message: req.flash('loginMessage') });
+};
+
+exports.register = function (req, res){
+	res.render('template', { page: 'register.html', message: req.flash('registerMessage') });
+}

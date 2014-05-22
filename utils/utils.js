@@ -1,8 +1,7 @@
 
-exports.isLoggedIn = function(req, res, next){
-	if (req.isAuthenticated()) return next();
-	res.redirect('/login');
-};
+exports.login = require('connect-ensure-login');
+
+exports.query = require('querystring');
 
 exports.generateUID = function(length){
 	var len = length || 32;

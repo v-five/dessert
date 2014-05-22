@@ -23,8 +23,8 @@ module.exports = {
 			require('./OAuth2orize')(oauth2orize, server);
 		},
 
-		OAuth2      : function(server, login, passport){
-			require('./OAuth2').set(server, login, passport);
+		OAuth2      : function(server, passport){
+			require('./OAuth2').set(server, passport);
 		}
 
 	},

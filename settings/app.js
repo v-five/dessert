@@ -5,10 +5,11 @@ module.exports = function(app) {
 	var mongoose     = require('mongoose');
 	var bodyParser   = require('body-parser');
 	var cookieParser = require('cookie-parser');
+	var directory    = require('serve-index');
+	var serveStatic  = require('serve-static');
 	var session      = require('express-session');
 	var passport     = require('passport');
 	var flash        = require('connect-flash');
-	var login        = require('connect-ensure-login');
 	var config       = require("../config");
 	var set          = require('../settings').set;
 	var get          = require('../settings').get;
@@ -18,10 +19,13 @@ module.exports = function(app) {
 	set.mongoose(mongoose);
 	set.passport(passport);
 	set.OAuth2orize(oauth2orize, server);
-	set.OAuth2(server, login, passport)
+	set.OAuth2(server, passport)
 
 	app.engine('html', swig.renderFile);
 	app.set('view engine', 'html');
+
+//	app.use(directory('public', {'icons': true}));
+	app.use(serveStatic('public'));
 
 	app.use(bodyParser());
 	app.use(cookieParser());

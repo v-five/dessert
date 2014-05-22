@@ -1,7 +1,9 @@
 
+var login = require('../utils').login;
+
 module.exports = {
 
-	set : function(server, login, passport){
+	set : function(server, passport){
 
 			this.OAuth2 = {
 

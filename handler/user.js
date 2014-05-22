@@ -60,8 +60,11 @@ var getAccessToken = function(userID, done){
 		if(err)
 			return done(err);
 
-		if(token && token !== null)
+		if(token && token !== null && !token.expired())
 			return done(null, token.token);
+
+		if(token.expired())
+			Token.findById(token._id).remove();
 
 		var accessToken  = utils.generateUID(256);
 		var dateNow      = Date.now();

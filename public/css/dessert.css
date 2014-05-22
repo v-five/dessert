@@ -1,0 +1,40 @@
+
+.dessert-container {
+	background-color: rgba(50, 50, 50, 0.1);
+	width: 100%;
+	height: 280px;
+	display: block;
+	border-radius: 6px;
+	margin-bottom: 15px;
+}
+
+.dessert-workspace {
+	height: 100%;
+	overflow: hidden;
+	padding: 10px;
+}
+
+.dessert-menu {
+	border-right: 1px #bababa solid;
+	width: 96px;
+	height: 100%;
+	float: left;
+	padding: 5px;
+}
+
+.folder {
+	display: inline-block;
+	width: auto;
+	padding: 5px;
+	background-color: rgba(50, 50, 50, .1);
+	border-radius: 3px;
+	border: 1px solid rgba(50, 50, 50, .2);
+}
+
+.folder.selected {
+	background-color: rgba(50, 50, 50, .5);
+}
+
+.folder:hover {
+	background-color: rgba(50, 50, 50, .3);
+}

@@ -1,7 +1,7 @@
 
 exports.profile = function(accessToken, done){
 
-	var endpoint = "/api/userinfo?access_token="+accessToken;
+	var endpoint = "/api/profile?access_token="+accessToken;
 	var method = "GET";
 
 	performRequest(endpoint, method, function(err, profile, info){
@@ -16,7 +16,58 @@ exports.profile = function(accessToken, done){
 	});
 };
 
-var performRequest = function (endpoint, method, done){
+exports.files = function(accessToken, owner, route, done){
+
+	var method = "GET";
+	var endpoint = "/api/files";
+
+	if(owner !== undefined)
+		endpoint += "/" + owner;
+
+	if(route !== undefined)
+		endpoint += "/" + route;
+
+	endpoint += "?access_token="+accessToken;
+
+
+	performRequest(endpoint, method, function(err, profile, info){
+
+		if(err)
+			return done(err);
+
+		if(!profile)
+			return done(null, false, info);
+
+		done(null, profile);
+	});
+};
+
+exports.createFile = function(accessToken, file, done){
+
+	var utils       = require('../utils');
+	var method      = "POST";
+	var endpoint    = "/api/files/create";
+
+	endpoint += "?access_token="+accessToken;
+
+	performRequest(endpoint, method, utils.query.stringify(file), function(err, profile, info){
+
+		if(err)
+			return done(err);
+
+		if(!profile)
+			return done(null, false, info);
+
+		done(null, profile);
+	});
+};
+
+var performRequest = function (endpoint, method, data, done){
+
+	done = done || data;
+	if(typeof data == 'function')
+		data = '';
+
 	var env = process.env.NODE_ENV || 'development';
 	var http = require('http');
 	var options = {
@@ -29,6 +80,14 @@ var performRequest = function (endpoint, method, done){
 		options.port = 3000;
 	}else{
 		options.hostname = 'dessert-api.herokuapp.com';
+	}
+
+	if(data != ''){
+
+		options.headers = {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Length': data.length
+		}
 	}
 
 	var req = http.request(options, function(response) {
@@ -71,5 +130,9 @@ var performRequest = function (endpoint, method, done){
 		done(false, e);
 	});
 
+
+	if(data != ''){
+		req.write(data);
+	}
 	req.end();
 }

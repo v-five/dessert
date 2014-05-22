@@ -7,7 +7,13 @@ module.exports = function(app, passport, oauth2) {
 	app.get('/', render.home);
 
 	// Profile page
-	app.get('/profile',	utils.isLoggedIn, render.profile);
+	app.get('/profile',	utils.login.ensureLoggedIn(), render.profile);
+
+	// Files page
+	app.get('/files/:owner?/:route*?', utils.login.ensureLoggedIn(), render.files);
+
+	// Create new folder
+	app.post('/files/create', utils.login.ensureLoggedIn(), render.createFile);
 
 
 	// ****************************************** //

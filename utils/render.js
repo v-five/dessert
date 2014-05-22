@@ -5,8 +5,8 @@ exports.home = function (req, res){
 
 exports.profile = function (req, res){
 
-	var user     = req.user;
 	var API      = require('../utils').API;
+	var user     = req.user;
 
 	API.profile(user.accessToken, function(err, profile, info){
 
@@ -28,4 +28,51 @@ exports.login = function (req, res){
 
 exports.register = function (req, res){
 	res.render('template', { page: 'register.html', message: req.flash('registerMessage') });
+}
+
+exports.files = function (req, res){
+
+	var API      = require('../utils').API;
+	var user     = req.user;
+	var owner    = req.params.owner;
+	var route    = req.params.route;
+
+	API.files(user.accessToken, owner, route, function(err, document, info){
+
+		if(err)
+			res.render('template', { page: 'error.html', error: err });
+
+		if(!document)
+			res.render('template', { page: 'error.html', error: info });
+
+		else
+			res.render('template', { page: 'files.html', document: document });
+	});
+}
+
+exports.createFile = function (req, res){
+
+	var API      = require('../utils').API;
+	var user     = req.user;
+	var file = new Object();
+
+	file.owner = req.body.owner;
+	file.name = req.body.name;
+	file.parent = req.body.parent;
+	file.type = 'dir';
+	file.content = [];
+
+	API.createFile(user.accessToken, file, function(err, document, info){
+
+		if(err)
+			res.redirect(req.headers.referer);
+//			res.render('template', { page: 'error.html', error: err });
+
+		if(!document)
+			res.redirect(req.headers.referer);
+//			res.render('template', { page: 'error.html', error: info });
+
+		else
+			res.redirect(req.headers.referer);
+	});
 }

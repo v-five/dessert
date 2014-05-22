@@ -2,8 +2,9 @@
 <html>
 <head>
 	<title>Dessert Authentication</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/dessert.css">
 	<style>
 		body {
 			padding-top:80px;
@@ -31,11 +32,16 @@
 <body>
 	<div class="container">
 
+		{% if page == 'files.html' %}
+		<div class="col-sm-12 col-sm-offset-0 jumbotronv" style="background-color: #EEEEEE;">
+		{% else %}
 		<div class="col-sm-6 col-sm-offset-3 jumbotronv" style="background-color: #EEEEEE;">
+		{% endif %}
 
 			{% block content %}
 				{% include page %}
 			{% endblock %}
+		</div>
 
 	</div>
 </body>

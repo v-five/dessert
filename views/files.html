@@ -1,0 +1,92 @@
+
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<script>
+		$(function() {
+
+			var tips = $( ".validateTips" );
+			var field = $('#name');
+
+			function updateTips( t ) {
+				tips
+						.text( t )
+						.addClass( "ui-state-highlight" );
+				setTimeout(function() {
+					tips.removeClass( "ui-state-highlight", 1500 );
+				}, 500 );
+			}
+
+			$( "#dialog-form" ).dialog({
+				autoOpen: false,
+				height: 300,
+				width: 350,
+				modal: true,
+				buttons: {
+					"Create new folder": function() {
+						var bValid = true;
+						field.removeClass( "ui-state-error" );
+
+						if(field.val().length < 3){
+							bValid = false;
+							updateTips( "Length of folder name must have at least 3 characters." );
+						}
+
+						if ( bValid ) {
+							$( "#dialog-form form" ).submit();
+							$( this ).dialog( "close" );
+						}
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+					field.val( "" ).removeClass( "ui-state-error" );
+				}
+			});
+
+			$(".new-folder").click(function() {
+						$( "#dialog-form" ).dialog( "open" );
+					});
+
+			$(".folder").click(function(){
+						$(this).toggleClass('selected');
+				});
+		});
+	</script>
+
+	<h1>{{document.owner.username}}'s dessert files</h1>
+
+	<br>
+
+	<div class="dessert-container">
+		<div class="dessert-menu">
+			<button class="btn btn-default btn-sm new-folder">New Folder</button>
+			<button class="btn btn-default btn-sm delete-folder">Delete Selected</button>
+		</div>
+		<div class="dessert-workspace">
+			{% if document.content == 0 %}
+				<p>Folder is empty.</p>
+			{% else %}
+				{% for file in document.content %}
+					<p class="folder" id="{{file._id}}">{{ file.name }}</p>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+	<p><a href="/profile/{{user.username}}" class="">Dessert profile</a><a href="/logout" class="btn btn-warning btn-sm" style="float: right; margin-bottom: 15px">Logout</a></p>
+
+	<div id="dialog-form" title="Create new folder">
+
+		<p class="validateTips">A folder name must be provided.</p>
+
+		<form action="/files/create" method="post">
+			<fieldset>
+				<label for="name">Folder name</label>
+				<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
+				<input name="owner" value="{{document.owner.username}}" style="display: none">
+				<input name="parent" value={{document.route}} style="display: none">
+			</fieldset>
+		</form>
+	</div>

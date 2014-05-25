@@ -30,15 +30,15 @@ exports.files = function(accessToken, owner, route, done){
 	endpoint += "?access_token="+accessToken;
 
 
-	performRequest(endpoint, method, function(err, profile, info){
+	performRequest(endpoint, method, function(err, document, info){
 
 		if(err)
 			return done(err);
 
-		if(!profile)
+		if(!document)
 			return done(null, false, info);
 
-		done(null, profile);
+		done(null, document);
 	});
 };
 

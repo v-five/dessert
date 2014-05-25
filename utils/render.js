@@ -35,7 +35,8 @@ exports.files = function (req, res){
 	var API      = require('../utils').API;
 	var user     = req.user;
 	var owner    = req.params.owner;
-	var route    = req.params.route;
+	var route    = req.params.route || "";
+	route += req.params[0] || "";
 
 	API.files(user.accessToken, owner, route, function(err, document, info){
 

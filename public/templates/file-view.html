@@ -1,0 +1,26 @@
+
+<div id="routeBar">
+	<path ng-repeat="path in paths">
+		<!--class="fa fa-home"-->
+		<span ng-if="!$first" class="fa fa-angle-right"></span><a href="#files/{{path.path}}" ng-class="path.name.length==0?'fa fa-home':''" ng-if="!$last">{{path.name}}</a><span ng-class="path.name.length==0?'fa fa-home':''" ng-if="$last">{{path.name}}</span>
+	</path>
+</div>
+<file ng-repeat="file in files">
+	<a href="#files/{{file.owner.username}}{{file.route}}" style="text-align: center">
+		<img ng-if="1==1" src="images/folder.png" width="35px">
+		{{ file.name }}
+	</a>
+</file>
+
+<div class="modal fade" id="newFolder">
+	<div class="modal-content">
+		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<h4 class="modal-title" id="myModalLabel">New folder</h4>
+		<br><br>
+		<p>Please enter a name for the new folder:</p>
+		<input type="text" ng-model="folderName">
+		<br><br>
+		<button type="button" class="btn btn-primary" ng-click="newFolder()">Create</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	</div>
+</div>

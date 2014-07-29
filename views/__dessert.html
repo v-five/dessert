@@ -1,0 +1,33 @@
+
+	<div class="dessert-container">
+		<div class="dessert-menu">
+			<button class="btn btn-default btn-sm new-folder">New Folder</button>
+			<button class="btn btn-default btn-sm delete-folder">Delete Selected</button>
+		</div>
+		<div class="dessert-workspace">
+
+			<script>console.log({{JSON.stringify(document)}})</script>
+			{% if document.content == 0 %}
+				<p>Folder is empty.</p>
+			{% else %}
+				{% for file in document.content %}
+					<p class="folder" id="{{file._id}}" route="{{file.route}}">{{ file.name }}</p>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+	<p><a href="/profile/{{user.username}}" class="">Dessert profile</a><a href="/logout" class="btn btn-warning btn-sm" style="float: right; margin-bottom: 15px">Logout</a></p>
+
+	<div id="dialog-form" title="Create new folder">
+
+		<p class="validateTips">A folder name must be provided.</p>
+
+		<form action="/files/create" method="post">
+			<fieldset>
+				<label for="name">Folder name</label>
+				<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
+				<input name="owner" value="{{document.owner.username}}" style="display: none">
+				<input name="parent" value={{document.route}} style="display: none">
+			</fieldset>
+		</form>
+	</div>

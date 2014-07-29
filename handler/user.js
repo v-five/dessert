@@ -36,10 +36,10 @@ exports.login = function(req, done){
 			return done(err);
 
 		if(!user)
-			return done(null, false, req.flash('loginMessage', 'No user found.'));
+			return done(null, false, req.flash('info', 'No user found.'));
 
 		if(!user.validPassword(formData.password))
-			return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
+			return done(null, false, req.flash('info', 'Oops! Wrong password.'));
 
 		getAccessToken(user._id, function(err, accessToken){
 			if(err)
@@ -63,7 +63,7 @@ var getAccessToken = function(userID, done){
 		if(token && token !== null && !token.expired())
 			return done(null, token.token);
 
-		if(token.expired())
+		if(token && token.expired())
 			Token.findById(token._id).remove();
 
 		var accessToken  = utils.generateUID(256);
@@ -90,13 +90,17 @@ var getAccessToken = function(userID, done){
 exports.register = function(req, done){
 
 	var formData = req.body;
-	User.findOne({ 'email' :  formData.email }, function(err, user) {
+
+	User.findOne({ $or:[ { 'email' :  formData.email }, { 'username' :  formData.username } ]}, function(err, user) {
 
 		if (err)
 			return done(err);
 
 		if (user)
-			return done(null, false, req.flash('registerMessage', 'That email is already taken.'));
+			if(user.username == formData.username)
+				return done(null, false, req.flash('info', 'That username is already taken.'));
+			else
+				return done(null, false, req.flash('info', 'That email is already taken.'));
 
 		var newUser         = new User();
 

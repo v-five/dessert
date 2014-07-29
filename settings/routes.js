@@ -4,7 +4,7 @@ module.exports = function(app, passport, oauth2) {
 	var render = utils.render;
 
 	// Home page
-	app.get('/', render.home);
+	app.get('/', utils.login.ensureLoggedIn(), render.home);
 
 	// Profile page
 	app.get('/profile',	utils.login.ensureLoggedIn(), render.profile);
@@ -12,8 +12,11 @@ module.exports = function(app, passport, oauth2) {
 	// Files page
 	app.get('/files/:owner?/:route*?', utils.login.ensureLoggedIn(), render.files);
 
+	// Files page
+	app.get('/json/files/:owner?/:route*?', utils.login.ensureLoggedIn(), render.files);
+
 	// Create new folder
-	app.post('/files/create', utils.login.ensureLoggedIn(), render.createFile);
+	app.post('/json/files/create', utils.login.ensureLoggedIn(), render.createFile);
 
 
 	// ****************************************** //
@@ -24,8 +27,8 @@ module.exports = function(app, passport, oauth2) {
 	app.get('/login', render.login);
 
 	// Process the authentication
-	app.post('/login',  passport.authenticate('dessert', {
-		successReturnToOrRedirect : '/profile',
+	app.post('/login', passport.authenticate('dessert', {
+		successReturnToOrRedirect : '/',
 		failureRedirect : '/login'
 	}));
 
@@ -33,6 +36,10 @@ module.exports = function(app, passport, oauth2) {
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
+	});
+
+	app.get('/isLogged', function(req, res){
+		res.json({isLogged: req.user?true:false})
 	});
 
 
@@ -56,7 +63,7 @@ module.exports = function(app, passport, oauth2) {
 
 	// Process the registration
 	app.post('/register', passport.authenticate('dessert-register', {
-		successRedirect : '/profile',
+		successRedirect : '/',
 		failureRedirect : '/register'
 	}));
 

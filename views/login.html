@@ -1,25 +1,25 @@
 
-	<h1><span class="fa fa-sign-in"></span> Login</h1>
+<div class="modal-content">
+	<h1><span class="fa fa-cloud"></span> Dessert</h1><hr>
 
-	<!-- show any messages that come back with authentication -->
 	{% if message.length > 0 %}
-	<div class="alert alert-danger">{{ message }}</div>
+		<div class="alert alert-danger">{{ message }}</div>
 	{% endif %}
 
-	<!-- LOGIN FORM -->
 	<form action="/login" method="post">
 		<div class="form-group">
-			<label>Username</label>
-			<input type="text" class="form-control" name="username" id="email">
+			<label for="username">Username</label>
+			<input type="text" class="form-control" name="username" id="username" placeholder="Username or email" autofocus>
 		</div>
 		<div class="form-group">
-			<label>Password</label>
-			<input type="password" class="form-control" name="password"  id="password">
+			<label for="password">Password</label>
+			<input type="password" class="form-control" name="password"  id="password" placeholder="* * * * * * * *">
 		</div>
 
-		<button type="submit" class="btn btn-warning">Login</button>
+		<button type="submit" class="btn btn-primary pull-right"><span class="fa fa-user"></span> Login</button>
 	</form>
-	<hr>
-
 	<p>Need an account? <a href="/register">Register</a></p>
-	<p>Or go <a href="/">Home</a>.</p>
+	<p>Or login with:</p>
+	<a href="" class="btn btn-default" style="background-color: #46629E; color: white"><span class="fa fa-facebook"></span> Facebook</a>
+	<a href="" class="btn btn-default" style="background-color: #DD4B39; color: white"><span class="fa fa-google-plus"></span> Google</a>
+</div>

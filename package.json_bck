@@ -1,0 +1,44 @@
+{
+  "name": "dessert",
+  "version": "0.0.1",
+  "description": "Web interface for dessert",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:v-five/dessert-web.git"
+  },
+  "keywords": [
+    "dessert",
+    "sweets"
+  ],
+  "author": "v-five",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/v-five/dessert-web/issues"
+  },
+  "dependencies": {
+    "body-parser": "^1.0.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.0.1",
+    "express": "^4.0.0",
+    "express-session": "^1.0.2",
+    "mongoose": "^3.8.8",
+    "node-uuid": "^1.4.1",
+    "passport": "^0.2.0",
+    "passport-oauth": "^1.0.0",
+    "swig": "^1.3.2",
+    "passport-local": "^1.0.0",
+    "oauth2orize": "^1.0.1",
+    "connect-ensure-login": "^0.1.1",
+    "passport-http": "^0.2.2",
+    "passport-oauth2-client-password": "^0.1.1",
+    "passport-facebook": "^1.0.3",
+    "bcrypt-nodejs": "0.0.3",
+    "serve-index": "^1.0.3",
+    "serve-static": "^1.1.0",
+    "querystring": "^0.2.0"
+  }
+}

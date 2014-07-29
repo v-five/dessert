@@ -1,54 +1,31 @@
 <!doctype html>
 <html>
-<head>
-	<title>Dessert</title>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/css/dessert.css">
+	<head>
+		<title>{{ page.title }}</title>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/dessert.css">
 
-	<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
 
-
-	<style>
-		body {
-			padding-top:80px;
-			background-color: #323232;
-		}
-
-		.jumbotronv {
-			background-color: #eeeeee;
-
-			border-radius: 6px;
-
-			padding-top: 48px;
-			padding-bottom: 48px;
-
-			padding-right: 60px;
-			padding-left: 60px;
-		}
-
-		.jumbotronv h1 {
-			font-size: 43px;
-		}
-
-	</style>
-</head>
-<body>
-	<div class="container">
-
-		{% if page == 'files.html' %}
-		<div class="col-sm-12 col-sm-offset-0 jumbotronv" style="background-color: #EEEEEE;">
-		{% else %}
-		<div class="col-sm-6 col-sm-offset-3 jumbotronv" style="background-color: #EEEEEE;">
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="/js/dessert.js"></script>
+		<script src="/js/topMenu.js"></script>
+		<script src="/js/leftMenu.js"></script>
+		<script src="/js/workspace.js"></script>
+		<script src="/js/modalDialog.js"></script>
+		<script src="/js/loginForm.js"></script>
+		<script src="/js/fileView.js"></script>
+	</head>
+	<body ng-app="dessert">
+		{% if page.topMenu %}
+			<top-menu></top-menu>
 		{% endif %}
-
-			{% block content %}
-				{% include page %}
-			{% endblock %}
-		</div>
-
-	</div>
-</body>
+			{% if page.angular %}
+				<{{ page.template }}>
+			{% else %}
+				{% include page.template %}
+			{% endif %}
+	</body>
 </html>

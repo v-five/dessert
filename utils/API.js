@@ -78,7 +78,10 @@ var performRequest = function (endpoint, method, data, done){
 	if ('development' == env){
 		options.hostname = 'localhost';
 		options.port = 3000;
-	}else{
+	}else if ('koding' == env){
+        options.hostname = 'localhost';
+        options.port = 3000;
+    }else{
 		options.hostname = 'dessert-api.herokuapp.com';
 	}
 

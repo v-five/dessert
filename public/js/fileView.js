@@ -31,8 +31,9 @@
 					parentsName.reverse();
 
 					for(var i in parentsName){
+						console.log(route);
 						parents.push({name: parentsName[i], path: owner+route});
-						route = route.replace("/"+parentsName[i], '')
+						route = route.split("/").slice(0, -1).join("/");
 					}
 					parents.reverse();
 
@@ -61,7 +62,22 @@
 
 				}
 
-				$scope.$on('$locationChangeStart', function(event) {
+				$scope.delete = function(){
+					var id = this.file._id;
+					$http({
+						url: 'json/files/'+id,
+						method: "DELETE"
+					});
+
+					var path = $location.path().replace('/files/', '');
+					var t = path.split('/');
+					var owner = t[0];
+					var route = path.replace(owner, '');
+
+					getFiles(owner, route);
+				}
+
+				$scope.$on('$locationChangeStart', function() {
 					var path = $location.path().replace('/files/', '');
 					var t = path.split('/');
 					var owner = t[0];

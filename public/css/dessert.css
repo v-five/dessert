@@ -107,3 +107,7 @@ file {
 	padding-top: 10px;
 	width: 320px;
 }
+
+.position-fixed {
+	position: fixed;
+}

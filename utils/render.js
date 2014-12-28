@@ -89,11 +89,30 @@ exports.files = function (req, res){
 
 exports.createFile = function (req, res){
 
-	var API      = require('../utils').API;
-	var user     = req.user;
-	var file = req.body;
+	var API     = require('../utils').API;
+	var user    = req.user;
+	var file    = req.body;
 
 	API.createFile(user.accessToken, file, function(err, document, info){
+
+		if(err)
+			res.render('template', { page: 'error.html', error: err });
+
+		if(!document && info)
+			res.render('template', { page: 'error.html', error: info });
+
+		else
+			res.json(true);
+	});
+}
+
+exports.deleteFile = function (req, res){
+
+	var API     = require('../utils').API;
+	var user    = req.user;
+	var id    = req.params.id;
+
+	API.deleteFile(user.accessToken, id, function(err, document, info){
 
 		if(err)
 			res.render('template', { page: 'error.html', error: err });

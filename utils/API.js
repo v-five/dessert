@@ -25,7 +25,7 @@ exports.files = function(accessToken, owner, route, done){
 		endpoint += "/" + owner;
 
 	if(route !== undefined)
-		endpoint += "/" + route;
+		endpoint += "/" + route.split(" ").join("%20");
 
 	endpoint += "?access_token="+accessToken;
 
@@ -51,6 +51,26 @@ exports.createFile = function(accessToken, file, done){
 	endpoint += "?access_token="+accessToken;
 
 	performRequest(endpoint, method, utils.query.stringify(file), function(err, profile, info){
+
+		if(err)
+			return done(err);
+
+		if(!profile)
+			return done(null, false, info);
+
+		done(null, profile);
+	});
+};
+
+exports.deleteFile = function(accessToken, id, done){
+
+	var utils       = require('../utils');
+	var method      = "DELETE";
+	var endpoint    = "/api/files/delete/"+id;
+
+	endpoint += "?access_token="+accessToken;
+
+	performRequest(endpoint, method, function(err, profile, info){
 
 		if(err)
 			return done(err);

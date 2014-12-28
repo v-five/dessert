@@ -18,6 +18,9 @@ module.exports = function(app, passport, oauth2) {
 	// Create new folder
 	app.post('/json/files/create', utils.login.ensureLoggedIn(), render.createFile);
 
+	// Delete file
+	app.delete('/json/files/:id', utils.login.ensureLoggedIn(), render.deleteFile);
+
 
 	// ****************************************** //
 	// ************* AUTHENTICATION ************* //

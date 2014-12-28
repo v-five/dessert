@@ -6,10 +6,22 @@
 	</path>
 </div>
 <file ng-repeat="file in files">
-	<a href="#files/{{file.owner.username}}{{file.route}}" style="text-align: center">
+	<a href="#files/{{file.owner.username}}{{file.route}}" style="text-align: center" context-menu data-target="menu-{{ $index }}">
 		<img ng-if="1==1" src="images/folder.png" width="35px">
-		{{ file.name }}
+		<p>{{ file.name }}</p>
 	</a>
+	<div class="dropdown position-fixed" id="menu-{{ $index }}">
+		<ul class="dropdown-menu" role="menu">
+			<li>
+				<a class="pointer" role="menuitem"
+				   ng-click="delete()">Delete</a>
+			</li>
+			<li>
+				<a class="pointer" role="menuitem"
+				   ng-click="rename()">Rename</a>
+			</li>
+		</ul>
+	</div>
 </file>
 
 <div class="modal fade" id="newFolder">

@@ -16,7 +16,10 @@ module.exports = function(app, passport, oauth2) {
 	app.get('/json/files/:owner?/:route*?', utils.login.ensureLoggedIn(), render.files);
 
 	// Create new folder
-	app.post('/json/files/create', utils.login.ensureLoggedIn(), render.createFile);
+	app.put('/json/files/create', utils.login.ensureLoggedIn(), render.createFile);
+
+	//Update file
+	app.post('/json/files/:id', utils.login.ensureLoggedIn(), render.updateFile);
 
 	// Delete file
 	app.delete('/json/files/:id', utils.login.ensureLoggedIn(), render.deleteFile);

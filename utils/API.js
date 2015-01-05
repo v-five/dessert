@@ -45,12 +45,32 @@ exports.files = function(accessToken, owner, route, done){
 exports.createFile = function(accessToken, file, done){
 
 	var utils       = require('../utils');
-	var method      = "POST";
+	var method      = "PUT";
 	var endpoint    = "/api/files/create";
 
 	endpoint += "?access_token="+accessToken;
 
 	performRequest(endpoint, method, utils.query.stringify(file), function(err, profile, info){
+
+		if(err)
+			return done(err);
+
+		if(!profile)
+			return done(null, false, info);
+
+		done(null, profile);
+	});
+};
+
+exports.updateFile = function(accessToken, id, updates, done){
+
+	var utils       = require('../utils');
+	var method      = "POST";
+	var endpoint    = "/api/files/update/"+id;
+
+	endpoint += "?access_token="+accessToken;
+
+	performRequest(endpoint, method, utils.query.stringify(updates), function(err, profile, info){
 
 		if(err)
 			return done(err);

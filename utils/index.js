@@ -15,6 +15,7 @@ module.exports = {
 		profile :   API.profile,
 		files   :   API.files,
 		createFile: API.createFile,
+		updateFile: API.updateFile,
 		deleteFile: API.deleteFile
 	},
 
@@ -25,6 +26,7 @@ module.exports = {
 		register:   render.register,
 		files   :   render.files,
 		createFile: render.createFile,
+		updateFile: render.updateFile,
 		deleteFile: render.deleteFile
 	}
 }

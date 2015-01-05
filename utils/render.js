@@ -106,11 +106,31 @@ exports.createFile = function (req, res){
 	});
 }
 
+exports.updateFile = function (req, res){
+
+	var API     = require('../utils').API;
+	var user    = req.user;
+	var id      = req.params.id;
+	var updates = req.body;
+
+	API.updateFile(user.accessToken, id, updates, function(err, document, info){
+
+		if(err)
+			res.render('template', { page: 'error.html', error: err });
+
+		if(!document && info)
+			res.render('template', { page: 'error.html', error: info });
+
+		else
+			res.json(true);
+	});
+}
+
 exports.deleteFile = function (req, res){
 
 	var API     = require('../utils').API;
 	var user    = req.user;
-	var id    = req.params.id;
+	var id      = req.params.id;
 
 	API.deleteFile(user.accessToken, id, function(err, document, info){
 

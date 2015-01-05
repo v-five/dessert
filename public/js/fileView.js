@@ -31,7 +31,6 @@
 					parentsName.reverse();
 
 					for(var i in parentsName){
-						console.log(route);
 						parents.push({name: parentsName[i], path: owner+route});
 						route = route.split("/").slice(0, -1).join("/");
 					}
@@ -54,7 +53,7 @@
 
 					$http({
 						url: 'json/files/create',
-						method: "POST",
+						method: "PUT",
 						data: newFile
 					}).success(function(data){
 						if(data) getFiles(currentFile.owner.username, currentFile.route);
@@ -67,6 +66,22 @@
 					$http({
 						url: 'json/files/'+id,
 						method: "DELETE"
+					});
+
+					var path = $location.path().replace('/files/', '');
+					var t = path.split('/');
+					var owner = t[0];
+					var route = path.replace(owner, '');
+
+					getFiles(owner, route);
+				}
+
+				$scope.rename = function(){
+					var id = this.file._id;
+					$http({
+						url: 'json/files/'+id,
+						method: "POST",
+						data: {name: "test"}
 					});
 
 					var path = $location.path().replace('/files/', '');

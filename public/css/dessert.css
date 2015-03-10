@@ -111,3 +111,10 @@ file {
 .position-fixed {
 	position: fixed;
 }
+
+#uploadFile{
+	display: none;
+}
+.triggerUpload{
+	cursor: pointer;
+}

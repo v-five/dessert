@@ -61,6 +61,30 @@
 
 				}
 
+				$scope.uploadFile = function (input) {
+					var file = input.files[0];
+					var reader = new FileReader();
+
+					reader.onload = function(e){
+						var newFile = new Object();
+
+						newFile.name = file.name;
+						newFile.owner = currentFile.owner.username;
+						newFile.parent = currentFile.route;
+						newFile.type = file.type;
+						newFile.binary = e.target.result;
+
+						$http({
+							url: 'json/files/create',
+							method: "PUT",
+							data: newFile
+						}).success(function(res){
+							if(data) getFiles(currentFile.owner.username, currentFile.route);
+						});
+					};
+					reader.readAsBinaryString(file);
+				}
+
 				$scope.delete = function(){
 					var id = this.file._id;
 					$http({

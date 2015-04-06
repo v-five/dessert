@@ -18,8 +18,18 @@
 						method: "GET"
 					}).success(function(data){
 						currentFile = data;
+						for(var i = 0; i < data.content.length; i++){
+							if(data.content[i].type != 'dir'){
+								var byteArray = new Uint8Array(data.content[i].binary);
+								var file = new Blob([byteArray.buffer], {type: data.content[i].type});
+								var URL = window.URL || window.webkitURL;
+								data.content[i].downloadUrl = URL.createObjectURL(file);
+								console.log(data.content[i]);
+							}
+						}
 						$scope.files = data.content;
 						$scope.paths = getPaths(data.route, data.owner.username);
+
 					});
 				}
 
@@ -55,8 +65,8 @@
 						url: 'json/files/create',
 						method: "PUT",
 						data: newFile
-					}).success(function(data){
-						if(data) getFiles(currentFile.owner.username, currentFile.route);
+					}).success(function(res){
+						if(res) getFiles(currentFile.owner.username, currentFile.route);
 					});
 
 				}
@@ -72,17 +82,19 @@
 						newFile.owner = currentFile.owner.username;
 						newFile.parent = currentFile.route;
 						newFile.type = file.type;
-						newFile.binary = e.target.result;
+						newFile.binary = this.result;
+
+						console.log(newFile)
 
 						$http({
 							url: 'json/files/create',
 							method: "PUT",
 							data: newFile
 						}).success(function(res){
-							if(data) getFiles(currentFile.owner.username, currentFile.route);
+							if(res) getFiles(currentFile.owner.username, currentFile.route);
 						});
 					};
-					reader.readAsBinaryString(file);
+					reader.readAsText(file);
 				}
 
 				$scope.delete = function(){

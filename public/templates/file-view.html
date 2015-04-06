@@ -6,9 +6,12 @@
 	</path>
 </div>
 <file ng-repeat="file in files">
-	<a href="#files/{{file.owner.username}}{{file.route}}" style="text-align: center" context-menu data-target="menu-{{ $index }}">
-		<img ng-if="file.type=='dir'" src="images/folder.png" width="35px">
-		<img ng-if="file.type!='dir'" src="{{file.binary}}" width="35px">
+	<a ng-if="file.type=='dir'" href="#files/{{file.owner.username}}{{file.route}}" style="text-align: center" context-menu data-target="menu-{{ $index }}">
+		<img src="images/folder.png" width="35px">
+		<p>{{ file.name }}</p>
+	</a>
+	<a ng-if="file.type!=='dir'" href="{{file.downloadUrl}}" target="_blank" download="{{file.name}}" style="text-align: center" context-menu data-target="menu-{{ $index }}">
+		<img src="images/file.png" width="35px">
 		<p>{{ file.name }}</p>
 	</a>
 	<div class="dropdown position-fixed" id="menu-{{ $index }}">

@@ -7,9 +7,11 @@
 			restrict: 'E',
 			templateUrl: '/templates/file-view.html',
 			controller: function($http, $scope, $location){
-
-				var currentFile = new Object();
+				var currentFile = {};
 				$scope.files = [];
+				$scope.isImage = function(name){
+					return name.match(/\.(jpg|jpeg|png|gif)$/i) != null;
+				};
 
 				var getFiles = function(owner, path){
 					var fullPath = owner + path;
@@ -20,22 +22,20 @@
 						currentFile = data;
 						for(var i = 0; i < data.content.length; i++){
 							if(data.content[i].type != 'dir'){
-								var byteArray = new Uint8Array(data.content[i].binary);
-								var file = new Blob([byteArray.buffer], {type: data.content[i].type});
+								var file = new Blob([ new Uint8Array(data.content[i].binary).buffer], {type: data.content[i].type});
 								var URL = window.URL || window.webkitURL;
 								data.content[i].downloadUrl = URL.createObjectURL(file);
-								console.log(data.content[i]);
 							}
 						}
 						$scope.files = data.content;
 						$scope.paths = getPaths(data.route, data.owner.username);
 
 					});
-				}
+				};
 
 				var getPaths = function(route, owner){
-					var parents = new Array();
-					var parentsName = new Array();
+					var parents = [];
+					var parentsName = [];
 					if(route == '/') parentsName.push('');
 					else parentsName = route.split('/');
 					parentsName.reverse();
@@ -47,10 +47,10 @@
 					parents.reverse();
 
 					return parents;
-				}
+				};
 
 				$scope.newFolder = function(){
-					var newFile = new Object();
+					var newFile = {};
 
 					newFile.name = $scope.folderName;
 					newFile.owner = currentFile.owner.username;
@@ -58,8 +58,7 @@
 					newFile.type = 'dir';
 					newFile.content = [];
 
-					$('#newFolder').modal('hide');
-					$('#newFolder input').val('');
+					$('#newFolder').modal('hide').find('input').val('');
 
 					$http({
 						url: 'json/files/create',
@@ -68,23 +67,20 @@
 					}).success(function(res){
 						if(res) getFiles(currentFile.owner.username, currentFile.route);
 					});
-
-				}
+				};
 
 				$scope.uploadFile = function (input) {
 					var file = input.files[0];
 					var reader = new FileReader();
 
-					reader.onload = function(e){
-						var newFile = new Object();
+					reader.onload = function(){
+						var newFile = {};
 
 						newFile.name = file.name;
 						newFile.owner = currentFile.owner.username;
 						newFile.parent = currentFile.route;
 						newFile.type = file.type;
-						newFile.binary = this.result;
-
-						console.log(newFile)
+						newFile.binary = new Uint8Array(this.result);
 
 						$http({
 							url: 'json/files/create',
@@ -94,8 +90,8 @@
 							if(res) getFiles(currentFile.owner.username, currentFile.route);
 						});
 					};
-					reader.readAsText(file);
-				}
+					reader.readAsArrayBuffer(file);
+				};
 
 				$scope.delete = function(){
 					var id = this.file._id;
@@ -110,7 +106,7 @@
 					var route = path.replace(owner, '');
 
 					getFiles(owner, route);
-				}
+				};
 
 				$scope.rename = function(){
 					var id = this.file._id;
@@ -126,7 +122,7 @@
 					var route = path.replace(owner, '');
 
 					getFiles(owner, route);
-				}
+				};
 
 				$scope.$on('$locationChangeStart', function() {
 					var path = $location.path().replace('/files/', '');

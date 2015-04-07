@@ -11,7 +11,8 @@
 		<p>{{ file.name }}</p>
 	</a>
 	<a ng-if="file.type!=='dir'" href="{{file.downloadUrl}}" target="_blank" download="{{file.name}}" style="text-align: center" context-menu data-target="menu-{{ $index }}">
-		<img src="images/file.png" width="35px">
+		<img ng-if="isImage(file.name)" src="{{file.downloadUrl}}" width="35px">
+		<img ng-if="!isImage(file.name)" src="images/file.png" width="35px">
 		<p>{{ file.name }}</p>
 	</a>
 	<div class="dropdown position-fixed" id="menu-{{ $index }}">

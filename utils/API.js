@@ -50,6 +50,8 @@ exports.createFile = function(accessToken, file, done){
 
 	endpoint += "?access_token="+accessToken;
 
+	file.binary = file.binary != undefined ? JSON.stringify(file.binary) : undefined;
+
 	performRequest(endpoint, method, utils.query.stringify(file), function(err, profile, info){
 
 		if(err)
@@ -150,7 +152,7 @@ var performRequest = function (endpoint, method, data, done){
 				}
 			});
 		}else{
-			var info = new Object();
+			var info = {};
 
 			info.code = response.statusCode;
 			info.name = "HttpError";
@@ -178,4 +180,4 @@ var performRequest = function (endpoint, method, data, done){
 		req.write(data);
 	}
 	req.end();
-}
+};

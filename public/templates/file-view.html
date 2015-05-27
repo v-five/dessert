@@ -1,34 +1,41 @@
 
-<div id="routeBar">
-	<path ng-repeat="path in paths">
+<div id="routeBar" class="clearfix">
+	<path ng-repeat="path in paths" class="right-home-section">
 		<!--class="fa fa-home"-->
-		<span ng-if="!$first" class="fa fa-angle-right"></span><a href="#files/{{path.path}}" ng-class="path.name.length==0?'fa fa-home':''" ng-if="!$last">{{path.name}}</a><span ng-class="path.name.length==0?'fa fa-home':''" ng-if="$last">{{path.name}}</span>
+		<span ng-if="!$first" class="fa fa-angle-right home-right-icon"></span>
+		<a class="folder-name" href="#files/{{path.path}}" ng-class="path.name.length==0?'fa fa-home':''" ng-if="!$last">{{path.name}}</a>
+		<span class="folder-name" ng-class="path.name.length==0?'fa fa-home':''" ng-if="$last">{{path.name}}</span>
 	</path>
 </div>
-<file ng-repeat="file in files">
-	<a ng-if="file.type=='dir'" href="#files/{{file.owner.username}}{{file.route}}" style="text-align: center" context-menu data-target="menu-{{ $index }}">
-		<img src="images/folder.png" width="35px">
-		<p>{{ file.name }}</p>
-	</a>
-	<a ng-if="file.type!=='dir'" href="{{file.downloadUrl}}" target="_blank" download="{{file.name}}" style="text-align: center" context-menu data-target="menu-{{ $index }}">
-		<img ng-if="isImage(file.name)" src="{{file.downloadUrl}}" width="35px">
-		<img ng-if="!isImage(file.name)" src="images/file.png" width="35px">
-		<p>{{ file.name }}</p>
-	</a>
-	<div class="dropdown position-fixed" id="menu-{{ $index }}">
-		<ul class="dropdown-menu" role="menu">
-			<li>
-				<a class="pointer" role="menuitem"
-				   ng-click="delete()">Delete</a>
-			</li>
-			<li>
-				<a class="pointer" role="menuitem"
-				   ng-click="rename()">Rename</a>
-			</li>
-		</ul>
-	</div>
-</file>
-
+<div class="row files-content">
+	<file ng-repeat="file in files" class="file-block">
+		<a ng-if="file.type=='dir'" href="#files/{{file.owner.username}}{{file.route}}" style="text-align: center" context-menu data-target="menu-{{ $index }}">
+			<i class="fa fa-folder"></i>
+			<p>{{ file.name }}</p>
+		</a>
+		<a ng-if="file.type!=='dir'" href="{{file.downloadUrl}}" target="_blank" download="{{file.name}}" style="text-align: center" context-menu data-target="menu-{{ $index }}">
+			<div ng-if="isImage(file.name)">
+				<i class="fa fa-file-image-o"></i>
+			</div>
+			<div ng-if="!isImage(file.name)">
+				<i class="fa fa-file"></i>
+			</div>
+			<p>{{ file.name }}</p>
+		</a>
+		<div class="dropdown position-fixed" id="menu-{{ $index }}">
+			<ul class="dropdown-menu" role="menu">
+				<li>
+					<a class="pointer" role="menuitem"
+					   ng-click="delete()">Delete</a>
+				</li>
+				<li>
+					<a class="pointer" role="menuitem"
+					   ng-click="rename()">Rename</a>
+				</li>
+			</ul>
+		</div>
+	</file>
+</div>
 <input id="uploadFile" onchange="angular.element(this).scope().uploadFile(this)" ng-model="file" type="file" name="filePath"/>
 
 <div class="modal fade" id="newFolder">
@@ -37,7 +44,7 @@
 		<h4 class="modal-title" id="myModalLabel">New folder</h4>
 		<br><br>
 		<p>Please enter a name for the new folder:</p>
-		<input type="text" ng-model="folderName">
+		<input type="text" class="form-control" ng-model="folderName">
 		<br><br>
 		<button type="button" class="btn btn-primary" ng-click="newFolder()">Create</button>
 		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

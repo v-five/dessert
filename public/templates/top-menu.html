@@ -1,41 +1,35 @@
 
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
+<div class="container">
+	<div class="top-bar">
+		<div class="row">
+			<div class="col-ms-4 col-lg-4">
+				<a href="" class="toggle-side-menu"><i class="fa fa-bars"></i></a>
+			</div>
+			<div class="col-ms-4 col-lg-4">
+				<a class="navbar-brand" href="/">Dessert</a>
+			</div>
+			<div class="col-ms-4 col-lg-4">
+				<ul class="nav navbar-nav navbar-right">
+					<li ng-hide="user.isLogged">
+						<a href="" data-toggle="modal" data-target="#login"><span class="fa fa-sign-in"></span> Login</a>
+					</li>
+					<li ng-show="user.isLogged" class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="">
+							<img src="/images/avatar.jpg" class="img-rounded"> v-five <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<i class="fa fa-caret-up dropdown-caret"></i>
+							<li><a href="/profile"><span class="fa fa-user"></span> Profile</a></li>
+							<li><a href=""><span class="fa fa-gear"></span> Settings</a></li>
+							<li class="divider"></li>
+							<li><a href="/logout"><span class="fa fa-sign-out"></span> Logout</a></a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div><!-- end .top-bar -->
+</div>
 
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Dessert</a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-
-            <ul class="nav navbar-nav">
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li ng-hide="user.isLogged">
-                    <a href="" data-toggle="modal" data-target="#login"><span class="fa fa-sign-in"></span> Login</a>
-                </li>
-                <li ng-show="user.isLogged" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
-                        <img src="/images/avatar.jpg" class="img-rounded" width="24px"> v-five <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/profile"><span class="fa fa-user"></span> Profile</a></li>
-                        <li><a href=""><span class="fa fa-gear"></span> Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/logout"><span class="fa fa-sign-out"></span> Logout</a></a></li>
-                    </ul>
-                </li>
-            </ul>
-
-        </div>
-    </div>
-</nav>
 
 <modal-dialog></modal-dialog>
